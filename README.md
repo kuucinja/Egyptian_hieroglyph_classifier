@@ -11,128 +11,111 @@ pinned: false
 
 # Contextual Hieroglyph Role Classifier
 
-This project trains a contextual classifier that helps learners decide whether an Egyptian hieroglyph sign is being used as:
+A machine-learning demo that classifies Egyptian hieroglyphs by their **functional role in context** — not by their visual appearance. The same hieroglyph sign can represent a sound (*phonetic*), stand for a whole word (*logographic*), or silently clarify meaning (*determinative*). This project uses surrounding text and transliteration context to make that distinction automatically.
 
-- `phonetic`: represents sound
-- `logographic`: represents a word, object, or idea
-- `determinative`: silent sign that clarifies meaning/category
+**Live demo:** https://huggingface.co/spaces/Kucina111/Egyptian_hieroglyph_classifier  
+**Dataset:** `data/contextual_examples_real_weak.csv` (7,870 weak-labelled corpus rows)  
+**Model:** Logistic regression on sentence-transformer embeddings — see `models/`
 
-The model uses text/context embeddings from `sentence-transformers/all-MiniLM-L6-v2` and a logistic regression classifier.
+---
 
-## Why Context Matters
+## How It Works
 
-A single hieroglyph image is not enough to know usage. The same sign can behave differently depending on neighboring signs, transliteration, and meaning. This project therefore uses contextual fields rather than isolated images.
+1. A target hieroglyph sign and its neighbours (context before, context after, transliteration, English gloss) are concatenated into a single text string.
+2. The string is embedded with [`sentence-transformers/all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) (384 dimensions, mean-pooled).
+3. A Logistic Regression classifier predicts one of three roles: `phonetic`, `logographic`, or `determinative`.
 
-Each training row includes:
+The model achieves **100% accuracy** on a stratified 25% hold-out test set. This reflects strong consistency within the weak-labelling heuristics used to generate the training data; further evaluation against expert annotations would be needed to assess broader generalisation.
 
-```text
-target_sign
-context_before
-context_after
-transliteration
-translation
-role
-notes
+---
+
+## Repository Structure
+
+```
+├── app.py                          # Gradio demo entry point (HF Spaces)
+├── requirements.txt                # Python dependencies
+├── REPORT.md                       # Assignment report
+├── DATASET_CARD.md                 # Dataset documentation
+├── MODEL_CARD.md                   # Model documentation
+│
+├── src/
+│   ├── context_features.py         # Builds the text input from a training row
+│   ├── context_train.py            # Training pipeline (embeddings + LogReg)
+│   ├── context_predict.py          # Inference: load model, embed, predict
+│   ├── sign_reference.py           # Gardiner code lookup for the UI
+│   ├── sign_images.py              # Loads hieroglyph images for the UI
+│   └── real_context_data.py        # Downloads corpus and generates weak labels
+│
+├── data/
+│   ├── contextual_examples_real_weak.csv   # 7,870-row weak-labelled dataset
+│   ├── contextual_examples.csv             # 12-row hand-annotated starter set
+│   ├── sign_reference.csv                  # Gardiner code reference table
+│   └── sign_image_manifest.csv             # Image paths for UI sign display
+│
+├── models/
+│   └── hieroglyph-context-role-logreg/
+│       ├── classifier.joblib       # Trained LogisticRegression
+│       ├── label_encoder.joblib    # Sklearn LabelEncoder
+│       ├── metadata.json           # Embedding model name, classes, dimensions
+│       └── metrics.json            # Accuracy and per-class F1 on test split
+│
+└── assets/
+    └── signs/                      # PNG images of individual hieroglyph signs
 ```
 
-## Active Files
+---
 
-```text
-.
-+-- app_context.py                 # Gradio contextual demo
-+-- run_context_pipeline.bat       # Windows one-command runner
-+-- data/
-|   +-- contextual_examples.csv    # Context role training data
-|   +-- sign_reference.csv         # Meaning and reading hints for target signs
-+-- src/
-|   +-- context_features.py        # Builds model input text
-|   +-- context_train.py           # Trains context embedding classifier
-|   +-- context_predict.py         # Loads model and predicts roles
-|   +-- sign_reference.py          # Looks up meaning/readings for the UI
-|   +-- __init__.py
-+-- requirements.txt
-+-- DATASET_CARD.md
-+-- MODEL_CARD.md
-+-- SPACE_README.md
-+-- archive_image_pipeline/        # Previous image-based pipeline and source image archive
-```
+## Dataset
 
-## Quickstart
+The dataset (`data/contextual_examples_real_weak.csv`) was produced from the **Ramses/AES corpus** ([Zenodo 10.5281/zenodo.7991241](https://doi.org/10.5281/zenodo.7991241)).
 
-Install dependencies:
+Each row represents one hieroglyph token in its textual context:
 
-```bat
+| Column | Description |
+|---|---|
+| `target_sign` | Gardiner code of the hieroglyph being classified |
+| `context_before` | Signs preceding the target in the sequence |
+| `context_after` | Signs following the target |
+| `transliteration` | Egyptian transliteration of the phrase |
+| `translation` | English gloss |
+| `role` | Weak label: `phonetic`, `logographic`, or `determinative` |
+| `notes` | Full original corpus encoding and confidence note |
+
+**Weak-labelling rules:**
+- `phonetic` — the sign's phonetic value appears in the transliteration without meaning evidence
+- `logographic` — the sign's reading and meaning both appear in context
+- `determinative` — the sign's meaning appears in the translation but is not reflected phonetically
+
+Rows with conflicting or ambiguous evidence are discarded. Final dataset: **7,870 high-confidence rows** across three classes.
+
+---
+
+## Running Locally
+
+```bash
 pip install -r requirements.txt
+python app.py
 ```
 
-Run the real-data weak-supervision pipeline:
+The app opens at `http://localhost:7860`. The embedding model (`all-MiniLM-L6-v2`, ~90 MB) is downloaded from Hugging Face Hub on first run; the trained classifier is loaded from `models/` directly.
+
+**To retrain the model on the real corpus:**
 
 ```bat
 run_real_context_pipeline.bat
 ```
 
-This downloads real Ramses/AES-derived contextual data from Zenodo, extracts contextual rows, weak-labels high-confidence examples using transliteration/translation/sign-reference evidence, trains the model, and starts the demo.
+This downloads the Zenodo corpus, extracts contextual rows, applies the weak-labelling rules, and retrains the classifier. Use `--refresh` to force a fresh download.
 
-To force a fresh download and relabel:
+---
 
-```bat
-run_real_context_pipeline.bat --refresh
-```
+## Dependencies
 
-You can still run the small starter dataset pipeline:
-
-```bat
-run_context_pipeline.bat
-```
-
-This trains the model into:
-
-```text
-models/hieroglyph-context-role-logreg
-```
-
-Then it starts the Gradio app:
-
-```text
-app_context.py
-```
-
-## Dataset
-
-The active dataset is:
-
-```text
-data/contextual_examples_real_weak.csv
-```
-
-It is produced from real corpus data by:
-
-```text
-src/real_context_data.py
-```
-
-The script downloads a real Ramses/AES-derived model-data file from Zenodo record `10.5281/zenodo.7991241`, extracts contextual text/transliteration rows, and creates weak labels only when the evidence is high-confidence.
-
-Weak-label rules include:
-
-- `phonetic`: the target sign's phonetic value appears in transliteration without meaning evidence.
-- `logographic`: the sign's logographic reading and meaning appear in context.
-- `determinative`: the sign's meaning appears in translation/gloss but the sign is not reflected phonetically.
-
-Uncertain or conflicting rows are skipped.
-
-The small hand-written starter file remains at:
-
-```text
-data/contextual_examples.csv
-```
-
-## Old Pipeline
-
-The older image-only pipeline has been moved to:
-
-```text
-archive_image_pipeline/
-```
-
-It is kept for reference, but it is not needed for the contextual role classifier.
+| Package | Purpose |
+|---|---|
+| `gradio` | Interactive web demo |
+| `torch` + `transformers` | Text embedding (all-MiniLM-L6-v2) |
+| `scikit-learn` | Logistic regression classifier |
+| `joblib` | Model serialisation |
+| `numpy` | Vector operations |
+| `huggingface-hub` | Model download fallback |
