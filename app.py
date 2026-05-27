@@ -191,7 +191,7 @@ EXAMPLES = load_real_rows()
 PRIMARY_ROWS = [EXAMPLES[example_id] for example_id in PRIMARY_EXAMPLE_IDS if example_id in EXAMPLES]
 
 
-with gr.Blocks(title="Contextual Hieroglyph Role Classifier", css=CUSTOM_CSS) as demo:
+with gr.Blocks(title="Contextual Hieroglyph Role Classifier") as demo:
     gr.Markdown(
         "# Contextual Hieroglyph Role Classifier\n"
         "A hieroglyph's shape alone does not always tell you how it is being used. "
@@ -213,7 +213,7 @@ with gr.Blocks(title="Contextual Hieroglyph Role Classifier", css=CUSTOM_CSS) as
     check_button = gr.Button("Check Answers", variant="primary")
     feedback = gr.Markdown()
     model_output = gr.Dataframe(
-        column_names=["example", "model_prediction", "confidence", "weak_label"],
+        headers=["example", "model_prediction", "confidence", "weak_label"],
         label="Model comparison",
         interactive=False,
     )
@@ -221,7 +221,7 @@ with gr.Blocks(title="Contextual Hieroglyph Role Classifier", css=CUSTOM_CSS) as
     gr.Markdown("## Target Sign Reference")
     sign_output = gr.Dataframe(
         value=[sign_reference_row(row) for row in PRIMARY_ROWS],
-        column_names=[
+        headers=[
             "name",
             "gardiner_code",
             "phonetic_sound",
@@ -235,11 +235,11 @@ with gr.Blocks(title="Contextual Hieroglyph Role Classifier", css=CUSTOM_CSS) as
     gr.Markdown("## More Real Weak-Labeled Examples")
     gr.Dataframe(
         value=extra_examples_table(),
-        column_names=["id", "target", "gardiner_code", "real_encoding", "transliteration", "weak_label"],
+        headers=["id", "target", "gardiner_code", "real_encoding", "transliteration", "weak_label"],
         interactive=False,
     )
 
     check_button.click(check_answers, inputs=[answer_one, answer_two], outputs=[feedback, model_output])
 
 
-demo.launch(server_name="0.0.0.0")
+demo.launch(server_name="0.0.0.0", css=CUSTOM_CSS)
