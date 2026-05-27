@@ -213,7 +213,7 @@ with gr.Blocks(title="Contextual Hieroglyph Role Classifier", css=CUSTOM_CSS) as
     check_button = gr.Button("Check Answers", variant="primary")
     feedback = gr.Markdown()
     model_output = gr.Dataframe(
-        headers=["example", "model_prediction", "confidence", "weak_label"],
+        column_names=["example", "model_prediction", "confidence", "weak_label"],
         label="Model comparison",
         interactive=False,
     )
@@ -221,7 +221,7 @@ with gr.Blocks(title="Contextual Hieroglyph Role Classifier", css=CUSTOM_CSS) as
     gr.Markdown("## Target Sign Reference")
     sign_output = gr.Dataframe(
         value=[sign_reference_row(row) for row in PRIMARY_ROWS],
-        headers=[
+        column_names=[
             "name",
             "gardiner_code",
             "phonetic_sound",
@@ -235,7 +235,7 @@ with gr.Blocks(title="Contextual Hieroglyph Role Classifier", css=CUSTOM_CSS) as
     gr.Markdown("## More Real Weak-Labeled Examples")
     gr.Dataframe(
         value=extra_examples_table(),
-        headers=["id", "target", "gardiner_code", "real_encoding", "transliteration", "weak_label"],
+        column_names=["id", "target", "gardiner_code", "real_encoding", "transliteration", "weak_label"],
         interactive=False,
     )
 
