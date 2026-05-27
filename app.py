@@ -242,4 +242,4 @@ with gr.Blocks(title="Contextual Hieroglyph Role Classifier", css=CUSTOM_CSS) as
     check_button.click(check_answers, inputs=[answer_one, answer_two], outputs=[feedback, model_output])
 
 
-demo.launch()
+demo.launch(server_name="0.0.0.0")
