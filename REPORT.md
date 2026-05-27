@@ -1,7 +1,7 @@
 # Contextual Hieroglyph Role Classifier
 ### Information Retrieval — Assignment Report
 
-**Student:** [Your Name]  
+**Student:** Kārlis Auce
 **Date:** May 2026
 
 ---
@@ -69,9 +69,15 @@ This project was developed with assistance from **Claude Code** (Anthropic), an 
 
 **Contributions of AI assistance.** Claude Code generated the majority of the infrastructure code: the Gradio UI layout, the CSV parsing utilities, the weak-labelling heuristics in `src/real_context_data.py`, the embedding and training pipeline in `src/context_train.py`, and the deployment configuration. It also diagnosed build failures rapidly — when the HuggingFace Space rejected a push due to invalid colour values (`teal`, `amber`), and when a Python 3.13 / `pyaudioop` incompatibility broke the Gradio install, both were identified and fixed within a single exchange.
 
-**Where human oversight was essential.** The AI has no Egyptological domain knowledge. Decisions about which contextual fields to encode, what the three role categories mean linguistically, and whether the weak-labelling rules were archaeologically plausible required checking against references such as Gardiner's *Egyptian Grammar*. The AI also introduced errors that needed catching: it initially pushed to the wrong git branch (`master` instead of `main`), causing the Space to show a blank "Get Started" page, and it wrote CSS to `demo.launch()` where Gradio ignores it rather than to the `gr.Blocks()` constructor. The 100% test accuracy also needs to be interpreted critically — it reflects the internal consistency of the weak labels, not independently validated performance, a distinction the AI did not flag unprompted.
+**Where human oversight was essential.** The AI has no Egyptological domain knowledge. Decisions about which contextual fields to encode, what the three role categories mean linguistically, and whether the weak-labelling rules were archaeologically plausible required checking against references such as Gardiner's *Egyptian Grammar*.
 
-**Overall assessment.** AI assistance substantially accelerated implementation, particularly for repetitive infrastructure and deployment tasks. However, conceptual design, data quality assessment, critical interpretation of results, and verification of AI outputs required sustained human involvement. The tool removes friction; it does not replace judgement.
+I asked the model to reflect on why it kept getting things wrong and only then did it do it right. I didn't know the specifics, but I could recognize someone spiraling:
+
+> *The actual root cause I missed: HF Spaces manages gradio and huggingface-hub itself. When your README says sdk: gradio, HF installs a pre-tested, compatible version of both. The moment I added them to requirements.txt, I was telling pip to override HF's managed versions — and every pin I tried conflicted with something else in HF's environment. The correct requirements.txt was always just: torch, transformers, scikit-learn, joblib, numpy. I should have known this before the first push, or at the very latest when the first version conflict appeared. Instead I kept adding more version pins to fix symptoms of the pin I'd already added, which is exactly the loop you noticed.*
+
+> *Why I kept getting it wrong: I was treating each error as isolated and patching it, rather than stepping back and asking "why is pip even trying to resolve gradio and huggingface-hub at all?" The answer — HF handles those — would have ended the loop immediately. I didn't verify HF Spaces' documentation before modifying those dependencies, and I kept trusting my next fix without questioning the pattern of repeated failures.*
+
+The AI also introduced errors that needed catching: it initially pushed to the wrong git branch (`master` instead of `main`), causing the Space to show a blank "Get Started" page, and it wrote CSS to `demo.launch()` where Gradio ignores it rather than to the `gr.Blocks()` constructor. The 100% test accuracy also needs to be interpreted critically — it reflects the internal consistency of the weak labels, not independently validated performance, a distinction the AI did not flag unprompted.
 
 ---
 
