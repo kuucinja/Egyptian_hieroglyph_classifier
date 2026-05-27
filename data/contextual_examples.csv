@@ -1,0 +1,13 @@
+id,source,target_sign,context_before,context_after,transliteration,translation,role,notes
+ex001,starter,A1_seated_man,,D21_mouth,,man/person action,determinative,Starter annotation pattern; replace or expand with referenced text examples.
+ex002,starter,A2_man_hand_to_mouth,,X1_loaf,,mouth-related action,determinative,Starter annotation pattern; replace or expand with referenced text examples.
+ex003,starter,D21_mouth,M17_reed,X1_loaf,r,,phonetic,Common instructional use as phonogram r.
+ex004,starter,G17_owl,M17_reed,X1_loaf,m,,phonetic,Common instructional use as phonogram m.
+ex005,starter,M17_reed,G17_owl,N35_water_ripple,i,,phonetic,Common instructional use as phonogram i/y.
+ex006,starter,N35_water_ripple,G17_owl,X1_loaf,n,,phonetic,Common instructional use as phonogram n.
+ex007,starter,O1_house,,Z1_stroke,pr,house/estate,logographic,House sign commonly functions as word sign pr in instructional examples.
+ex008,starter,ankh,,Z1_stroke,anx,life,logographic,Ankh commonly functions as word sign for life in instructional examples.
+ex009,starter,eye,,Z1_stroke,ir,eye,logographic,Eye sign can function as word sign; context determines reading.
+ex010,starter,Z1_stroke,O1_house,, ,marks word-sign usage,determinative,Stroke can mark logographic use of a preceding sign.
+ex011,starter,X1_loaf,D21_mouth,N35_water_ripple,t,,phonetic,Common instructional use as phonogram t.
+ex012,starter,V28_wick,M17_reed,D21_mouth,H,,phonetic,Common instructional use as h-like phonogram depending transliteration convention.

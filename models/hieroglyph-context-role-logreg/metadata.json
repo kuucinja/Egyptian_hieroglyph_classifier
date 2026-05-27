@@ -1,0 +1,12 @@
+{
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "classifier": "sklearn.linear_model.LogisticRegression",
+  "task_type": "contextual_hieroglyph_role_classification",
+  "classes": [
+    "determinative",
+    "logographic",
+    "phonetic"
+  ],
+  "data_file": "data\\contextual_examples_real_weak.csv",
+  "embedding_dimension": 384
+}

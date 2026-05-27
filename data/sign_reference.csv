@@ -1,0 +1,22 @@
+sign,display_name,gardiner_code,phonetic_value,logographic_reading,meaning,notes
+A1_seated_man,seated man,A1,,,man/person,Often used as a determinative for people or human actions.
+A2_man_hand_to_mouth,man with hand to mouth,A2,,,eat/speak/drink,Often used as a determinative for actions involving the mouth.
+D21_mouth,mouth,D21,r,r,mouth,Can function as phonogram r or as a word sign for mouth.
+G17_owl,owl,G17,m,,owl,Common uniliteral phonogram for m.
+M17_reed,reed leaf,M17,i/y,,reed,Common uniliteral phonogram often transliterated i or y depending context.
+N35_water_ripple,water ripple,N35,n,,water,Common uniliteral phonogram for n.
+O1_house,house plan,O1,pr,pr,house/estate,Often used as logogram for house or estate and can read pr.
+V28_wick,twisted wick,V28,H,,wick,Common h-like phonogram depending transliteration convention.
+X1_loaf,bread loaf,X1,t,,bread loaf,Common uniliteral phonogram for t.
+Z1_stroke,single stroke,Z1,,,single stroke,Can mark logographic use of a preceding sign.
+ankh,ankh,S34,anx,anx,life,Often used as a word sign for life.
+eye,eye,D4,ir,ir,eye,Can function as a word sign for eye or related ideas in context.
+sun,sun,N5,ra,ra,sun/Ra,Often used for sun or the god Ra.
+scarab,scarab,L1,xpr,xpr,become/scarab,Associated with kheper meaning become or come into being.
+owl,owl,G17,m,,owl,Alias for datasets or examples that use English sign names.
+reed,reed leaf,M17,i/y,,reed,Alias for datasets or examples that use English sign names.
+mouth,mouth,D21,r,r,mouth,Alias for datasets or examples that use English sign names.
+water,water ripple,N35,n,,water,Alias for datasets or examples that use English sign names.
+house,house plan,O1,pr,pr,house/estate,Alias for datasets or examples that use English sign names.
+loaf,bread loaf,X1,t,,bread loaf,Alias for datasets or examples that use English sign names.
+stroke,single stroke,Z1,,,single stroke,Alias for datasets or examples that use English sign names.

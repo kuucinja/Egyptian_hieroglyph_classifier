@@ -1,0 +1,18 @@
+gardiner_code,sign,display_name,image_path
+A1,A1_seated_man,seated man,assets/signs/A1.png
+B1,B1_seated_woman,seated woman,assets/signs/B1.png
+D21,D21_mouth,mouth,assets/signs/D21.png
+D36,D36_forearm,forearm,assets/signs/D36.png
+D4,eye,eye,assets/signs/D4.png
+D58,D58_foot,foot,assets/signs/D58.png
+G17,G17_owl,owl,assets/signs/G17.png
+G43,G43_quail_chick,quail chick,assets/signs/G43.png
+I9,I9_horned_viper,horned viper,assets/signs/I9.png
+M17,M17_reed,reed leaf,assets/signs/M17.png
+N35,N35_water_ripple,water ripple,assets/signs/N35.png
+S29,S29_folded_cloth,folded cloth,assets/signs/S29.png
+S34,ankh,ankh,assets/signs/S34.png
+V13,V13_tethering_rope,tethering rope,assets/signs/V13.png
+X1,X1_loaf,bread loaf,assets/signs/X1.png
+Y1,Y1_papyrus_roll,papyrus roll,assets/signs/Y1.png
+Z1,Z1_stroke,single stroke,assets/signs/Z1.png

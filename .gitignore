@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+huggingface_token.txt
+gradio.err.log
+gradio.out.log
+project_structure.txt
+Egyptian_hieroglyph_classifier/
+archive_image_pipeline/
+data/raw/
+data/real_context_raw.csv
