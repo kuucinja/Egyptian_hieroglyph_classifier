@@ -1,7 +1,7 @@
 ---
 title: Contextual Hieroglyph Role Classifier
-colorFrom: teal
-colorTo: amber
+colorFrom: yellow
+colorTo: indigo
 sdk: gradio
 sdk_version: 4.44.0
 app_file: app.py
